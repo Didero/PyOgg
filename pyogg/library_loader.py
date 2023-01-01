@@ -101,9 +101,6 @@ class ExternalLibrary:
 
     @staticmethod
     def load_other(name, paths = None, tests = []):
-        os.environ["PATH"] += os.pathsep + os.pathsep.join((os.getcwd(), _here))
-        if paths: os.environ["PATH"] += os.pathsep + os.pathsep.join(paths)
-
         for style in _other_styles:
             candidate = style.format(name)
             library = ctypes.util.find_library(candidate)
@@ -117,9 +114,6 @@ class ExternalLibrary:
 
     @staticmethod
     def load_windows(name, paths = None, tests = []):
-        os.environ["PATH"] += os.pathsep + os.pathsep.join((os.getcwd(), _here))
-        if paths: os.environ["PATH"] += os.pathsep + os.pathsep.join(paths)
-        
         not_supported = [] # libraries that were found, but are not supported
         for style in _windows_styles:
             candidate = style.format(name)
