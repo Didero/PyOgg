@@ -9,7 +9,8 @@ from typing import (
     List
 )
 
-_here = os.path.dirname(__file__)
+_here = sys.path[0] if os.path.isdir(sys.path[0]) else os.path.dirname(sys.path[0])
+os.environ["PATH"] += os.pathsep + os.pathsep.join((os.getcwd(), _here))
 
 class ExternalLibraryError(Exception):
     pass
@@ -90,6 +91,8 @@ class ExternalLibrary:
     def load(name, paths = None, tests = []):
         if name in _loaded_libraries:
             return _loaded_libraries[name]
+        if paths:
+            os.environ['PATH'] = os.pathsep + os.pathsep.join(paths)
         if sys.platform == "win32":
             lib = ExternalLibrary.load_windows(name, paths, tests)
             _loaded_libraries[name] = lib
@@ -128,7 +131,6 @@ class ExternalLibrary:
                     pass
                 except OSError:
                     not_supported.append(library)
-            
 
         if not_supported:
             raise ExternalLibraryError("library '{}' couldn't be loaded, because the following candidates were not supported:".format(name)
