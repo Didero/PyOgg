@@ -9,8 +9,8 @@ from typing import (
     List
 )
 
-_here = sys.path[0] if os.path.isdir(sys.path[0]) else os.path.dirname(sys.path[0])
-os.environ["PATH"] += os.pathsep + os.pathsep.join((os.getcwd(), _here))
+_here = os.path.dirname(__file__)
+os.environ["PATH"] += os.pathsep + os.pathsep.join((os.getcwd(), _here, sys.path[0] if os.path.isdir(sys.path[0]) else os.path.dirname(sys.path[0])))
 
 class ExternalLibraryError(Exception):
     pass
